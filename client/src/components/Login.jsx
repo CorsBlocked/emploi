@@ -93,9 +93,7 @@ const Login = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-blue-500 hover:underline">
-            Forgot password?
-          </a>
+          
         </div>
 
         {/* Submit Button */}
