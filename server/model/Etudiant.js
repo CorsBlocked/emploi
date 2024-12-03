@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Assuming you already have a Classe model in the same folder
 const Classe = require('./Classe');  // Adjust the path if necessary
 
 const etudiantSchema = new Schema({
