@@ -27,7 +27,7 @@ const Sidebar = () => {
             <span className="ml-3">Ajout Emploi</span>
           </Link>
           {/* Fix: Add closing tag for Link and pass the userId */}
-          <Link to="/Listeemploi" className="flex items-center text-gray-600 px-4 py-2">
+          <Link to="/Edittable" className="flex items-center text-gray-600 px-4 py-2">
             <Bookmark size={20} />
             <span className="ml-3">Emplois</span>
           </Link>
