@@ -86,7 +86,7 @@ const Timetable = () => {
 
     try {
       await axios.post("http://localhost:5500/timetable/create", {
-        className: selectedClass.nom, // Use selectedClass.nom
+        className: selectedClass.nom,
         days,
         times,
         subjects: timetable,

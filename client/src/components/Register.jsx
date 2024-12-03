@@ -45,7 +45,7 @@ const Register = () => {
         nom: formData.nom,
         email: formData.email,
         mdp: formData.password,
-        classe: formData.classe,
+        classeId: formData.classe, // Sending classeId instead of classe
       });
 
       setSuccessMessage("Registration successful! Please log in.");
@@ -141,8 +141,6 @@ const Register = () => {
                 ))}
               </select>
             </div>
-
-      
 
             {/* Terms and Conditions */}
             <div className="flex items-center">
