@@ -1,20 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import axios from "axios";
 
 const subjects = ["Math", "Sc", "Phy", "Info"];
 
 const Timetable = () => {
   const [timetable, setTimetable] = useState(
-    Array(6)
-      .fill(null)
-      .map(() => Array(6).fill("")) // Adjusted to match 6 rows
+    Array(6).fill(null).map(() => Array(5).fill("")) // 6 days, 5 time slots
   );
 
-  const [selectedClass, setSelectedClass] = useState("");
+  const [classes, setClasses] = useState([]); // Store classes
+  const [selectedClass, setSelectedClass] = useState(null);
 
   const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
   const times = ["8:30-10:00", "10:15-11:45", "12:00-13:30", "13:45-15:15", "15:30-17:00"];
+
+  useEffect(() => {
+    // Fetch classes from the backend
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get("http://localhost:5500/classes/all");
+        setClasses(response.data); // Directly set the fetched classes
+      } catch (error) {
+        console.error("Erreur lors de la récupération des classes :", error);
+      }
+    };
+
+    fetchClasses();
+  }, []);
 
   const handleCellChange = (dayIndex, timeIndex, subject) => {
     const updatedTimetable = [...timetable];
@@ -22,15 +36,24 @@ const Timetable = () => {
     setTimetable(updatedTimetable);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
+    if (!selectedClass) {
+      alert("Veuillez sélectionner une classe avant de télécharger.");
+      return;
+    }
+
+    // Save the class data (ID and name) to local storage
+    localStorage.setItem(
+      "selectedClass",
+      JSON.stringify({ id: selectedClass._id, name: selectedClass.nom })
+    );
+
     const doc = new jsPDF("landscape");
     doc.setFontSize(16);
     doc.text("Emploi du Temps", 140, 10, { align: "center" });
 
-    if (selectedClass) {
-      doc.setFontSize(12);
-      doc.text(`Classe: ${selectedClass}`, 20, 20);
-    }
+    doc.setFontSize(12);
+    doc.text(`Classe: ${selectedClass.nom}`, 20, 20); // Use selectedClass.nom
 
     const tableHeaders = ["Heure", ...days];
     const tableBody = times.map((time, timeIndex) => [
@@ -41,7 +64,7 @@ const Timetable = () => {
     doc.autoTable({
       head: [tableHeaders],
       body: tableBody,
-      startY: selectedClass ? 30 : 20,
+      startY: 30,
       styles: {
         halign: "center",
         valign: "middle",
@@ -60,30 +83,47 @@ const Timetable = () => {
     });
 
     doc.save("emploi_du_temps.pdf");
+
+    try {
+      await axios.post("http://localhost:5500/timetable/create", {
+        className: selectedClass.nom, // Use selectedClass.nom
+        days,
+        times,
+        subjects: timetable,
+      });
+      alert("Emploi du temps enregistré avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement :", error);
+      alert("Impossible d'enregistrer l'emploi du temps.");
+    }
   };
 
   return (
     <div className="p-6">
       <h1 className="text-center text-2xl font-bold mb-6 text-gray-800">Emploi du Temps</h1>
 
-      {/* Class Selection Section */}
-      <div className="flex justify-center items-center mb-6">
+      <div className="flex justify-center text-black items-center mb-6">
         <label htmlFor="class" className="mr-4 text-lg font-medium text-gray-700">
           Choisir une Classe:
         </label>
         <select
           id="class"
-          value={selectedClass}
-          onChange={(e) => setSelectedClass(e.target.value)}
-          className="border border-gray-400 p-2 rounded text-gray-700"
+          value={selectedClass ? selectedClass._id : ""}
+          onChange={(e) => {
+            const selected = classes.find((classe) => classe._id === e.target.value);
+            setSelectedClass(selected); // Set the full object
+          }}
+          className="border border-gray-400 p-2 rounded text-black"
         >
-          <option value=""> Sélectionnez une classe </option>
-          <option value="7B faracha"> 7B faracha </option>
-          <option value="7B o97ouwen">7B o97ouwen</option>
+          <option value="">Sélectionnez une classe</option>
+          {classes.map((classe) => (
+            <option key={classe._id} value={classe._id}>
+              {classe.nom} {/* Display the class name here */}
+            </option>
+          ))}
         </select>
       </div>
 
-      {/* Timetable */}
       <table className="border-collapse border border-gray-300 w-full text-center shadow-md">
         <thead>
           <tr className="bg-gray-800 text-white">
@@ -104,7 +144,7 @@ const Timetable = () => {
                   <select
                     value={timetable[dayIndex][timeIndex]}
                     onChange={(e) => handleCellChange(dayIndex, timeIndex, e.target.value)}
-                    className="border border-gray-400 p-2 rounded w-full text-gray-700"
+                    className="border border-gray-400 p-2 rounded w-full text-black"
                   >
                     <option value="">Select</option>
                     {subjects.map((subject, index) => (

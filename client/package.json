@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.8",
     "client": "file:",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
