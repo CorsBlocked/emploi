@@ -24,13 +24,13 @@ const Sidebar = () => {
           </Link>
           <Link to="/emploi" className="flex items-center text-gray-600 px-4 py-2">
             <Bookmark size={20} />
-            <span className="ml-3">Emploi</span>
+            <span className="ml-3">Ajout Emploi</span>
           </Link>
           {/* Fix: Add closing tag for Link and pass the userId */}
-          <div className="flex items-center text-gray-600 px-4 py-2">
-            <Settings size={20} />
-            <span className="ml-3">Settings</span>
-          </div>
+          <Link to="/Listeemploi" className="flex items-center text-gray-600 px-4 py-2">
+            <Bookmark size={20} />
+            <span className="ml-3">Emplois</span>
+          </Link>
         </nav>
       </div>
 

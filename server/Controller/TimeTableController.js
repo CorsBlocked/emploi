@@ -48,6 +48,23 @@ exports.getTimetableByClass = async (req, res) => {
   }
 };
 
+// Récupérer tous les emplois du temps
+exports.getAllTimetables = async (req, res) => {
+  try {
+    // Rechercher tous les emplois du temps
+    const timetables = await Timetable.find();
+    
+    if (timetables.length === 0) {
+      return res.status(404).json({ message: 'Aucun emploi du temps trouvé.' });
+    }
+
+    res.status(200).json(timetables);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des emplois du temps.', error: error.message });
+  }
+};
+
+
 // Supprimer un emploi du temps
 exports.deleteTimetable = async (req, res) => {
   try {

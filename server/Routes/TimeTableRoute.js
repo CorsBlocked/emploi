@@ -1,10 +1,14 @@
 const express = require('express');
-const { saveTimetable, getTimetableByClass ,updateTimetable ,deleteTimetable} = require('../Controller/TimeTableController');
+const { saveTimetable, getTimetableByClass ,updateTimetable ,deleteTimetable,getAllTimetables} = require('../Controller/TimeTableController');
 
 const router = express.Router();
 
 // Route pour ajouter un emploi du temps
 router.post('/add', saveTimetable);
+
+
+router.get('/get', getAllTimetables);
+
 
 // Route pour récupérer un emploi du temps
 router.get('/get/:className', getTimetableByClass);
@@ -15,7 +19,6 @@ router.get('/update/:className', updateTimetable);
 
 //delete
 router.get('/delete/:className', deleteTimetable);
-
 
 
 
