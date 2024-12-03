@@ -9,7 +9,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import Sidebar from "./components/Sidebar";
 import HomeEtudiant from "./components/HomeEtudiant";
 import ClassesPage from "./components/ClassesPage";
-import Listeemploi from "./components/Listeemploi";
+import Edittable from "./components/Edittable";
 
 
 
@@ -26,7 +26,7 @@ function App() {
         <Route path="/side" element={<Sidebar/>} />
         <Route path="/HomeEtudiant" element={<HomeEtudiant/>} />
         <Route path="/classes" element={<ClassesPage/>} />
-        <Route path="/Listeemploi" element={<Listeemploi/>} />
+        <Route path="/Edittable" element={<Edittable/>} />
 
       </Routes>
     </BrowserRouter>

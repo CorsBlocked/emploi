@@ -14,11 +14,11 @@ router.get('/get', getAllTimetables);
 router.get('/get/:className', getTimetableByClass);
 
 //update
-router.get('/update/:className', updateTimetable);
+router.put('/update/:className', updateTimetable);
 
 
 //delete
-router.get('/delete/:className', deleteTimetable);
+router.delete('/delete/:className', deleteTimetable);
 
 
 

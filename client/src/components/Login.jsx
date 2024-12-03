@@ -23,22 +23,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post("http://localhost:5500/etudiants/login", {
         email: formData.email,
         mdp: formData.password,
       });
-
+  
       if (response.status === 200) {
         setErrorMessage(""); // Clear error message on successful submit
         console.log("Login successful:", response.data);
-        
-        // Redirect to HomeEtudiant page
-        navigate("/HomeEtudiant");
+  
+        // Extract user ID from the response
+        const userId = response.data.etudiant.id; // Correctly extract the ID
+        console.log("Extracted userId:", userId); // Debugging
+  
+        // Redirect to HomeEtudiant with user ID
+        navigate("/HomeEtudiant", { state: { userId } });
       }
     } catch (error) {
       setErrorMessage("Invalid email or password");
+      console.error("Error during login:", error); // Debugging
     }
   };
 
