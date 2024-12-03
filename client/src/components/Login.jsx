@@ -7,13 +7,8 @@ const Login = () => {
     <div className="flex flex-col lg:flex-row h-screen">
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white p-8">
         <h2 className="text-3xl font-bold mb-4">Login</h2>
-        <p className="text-gray-600 mb-6">See your growth and get support!</p>
-        
-   
-        <button className="flex items-center justify-center w-full lg:w-3/4 border border-gray-300 rounded-md py-2 mb-6 hover:bg-gray-100">
-          <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google Logo" className="mr-2" />
-          Sign in with Google
-        </button>
+        <p className="text-gray-600 mb-6">hello student enter in here!</p>
+
 
         <input
           type="email"
