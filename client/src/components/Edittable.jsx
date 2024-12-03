@@ -69,7 +69,6 @@ const Edittable = () => {
     <div className="min-h-screen flex bg-gray-50">
       <Sidebar /> {/* Add Sidebar here */}
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-blue-700 mb-4">Admin Page</h1>
 
         {/* Class Selection Dropdown */}
         <div className="flex justify-center text-black items-center mb-6">
