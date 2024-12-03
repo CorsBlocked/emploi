@@ -4,29 +4,31 @@ import "jspdf-autotable";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 
-const subjects = ["Math", "Sc", "Phy", "Info"];
+const subjects = ["Math", "Science", "Physics", "laformatik", "ja8rafya","madania","islamia","teri5","sport", ];
 
 const Timetable = () => {
   const [timetable, setTimetable] = useState(
     Array(6).fill(null).map(() => Array(5).fill(""))
   );
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [classes, setClasses] = useState([]); // Store available classes
+  const [selectedClass, setSelectedClass] = useState("");
+  const [classes, setClasses] = useState([]);
 
   const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
   const times = ["8:30-10:00", "10:15-11:45", "12:00-13:30", "13:45-15:15", "15:30-17:00"];
 
-  // Fetch available classes from the server
   useEffect(() => {
     axios.get("http://localhost:5500/classes/all")
       .then(response => {
-        console.log(response.data);  // Log the fetched classes data to verify its structure
-        setClasses(response.data);   // Set the classes data
+        setClasses(response.data);
       })
       .catch(error => {
-        console.error("Erreur lors du chargement des classes", error);
+        console.error("Error fetching classes:", error);
       });
   }, []);
+
+  const handleClassSelect = (e) => {
+    setSelectedClass(e.target.value);
+  };
 
   const handleCellChange = (dayIndex, timeIndex, subject) => {
     const updatedTimetable = [...timetable];
@@ -34,25 +36,48 @@ const Timetable = () => {
     setTimetable(updatedTimetable);
   };
 
-  const downloadPDF = async () => {
+  const saveTimetableToDatabase = async () => {
+    if (!selectedClass) {
+      alert("Veuillez sélectionner une classe avant de sauvegarder.");
+      return;
+    }
+
+    const timetableData = {
+      className: selectedClass,
+      days: days,
+      times: times,
+      subjects: timetable,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5500/timetable/add", timetableData);
+      console.log("Timetable saved:", response.data);
+      alert("Emploi du temps enregistré avec succès.");
+    } catch (error) {
+      console.error("Error saving timetable:", error);
+      alert("Erreur lors de l'enregistrement de l'emploi du temps.");
+    }
+  };
+
+  const downloadPDF = () => {
     if (!selectedClass) {
       alert("Veuillez sélectionner une classe avant de télécharger l'emploi du temps.");
       return;
     }
-  
+
     const doc = new jsPDF("landscape");
     doc.setFontSize(16);
     doc.text("Emploi du Temps", 140, 10, { align: "center" });
-  
+
     doc.setFontSize(12);
-    doc.text(`Classe: ${selectedClass.nom}`, 20, 20);
-  
+    doc.text(`Classe: ${selectedClass}`, 20, 20);
+
     const tableHeaders = ["Heure", ...days];
     const tableBody = times.map((time, timeIndex) => [
       time,
       ...timetable.map((day) => day[timeIndex]),
     ]);
-  
+
     doc.autoTable({
       head: [tableHeaders],
       body: tableBody,
@@ -73,24 +98,12 @@ const Timetable = () => {
         fillColor: [240, 240, 240],
       },
     });
-  
+
     doc.save("emploi_du_temps.pdf");
-  
-    try {
-      // Ensure the URL is correct and that the body is properly formatted
-      const response = await axios.post("http://localhost:5500/timetable/create", {
-        className: selectedClass.nom,
-        days,
-        times,
-        subjects: timetable,
-      });
-      alert("Emploi du temps enregistré avec succès !");
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement :", error);
-      alert("Impossible d'enregistrer l'emploi du temps.");
-    }
+
+    // Save timetable to database as well
+    saveTimetableToDatabase();
   };
-  
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -104,11 +117,8 @@ const Timetable = () => {
           </label>
           <select
             id="class"
-            value={selectedClass ? selectedClass._id : ""}
-            onChange={(e) => {
-              const selected = classes.find(cls => cls._id === e.target.value);
-              setSelectedClass(selected);
-            }}
+            value={selectedClass}
+            onChange={handleClassSelect}
             className="border border-gray-400 p-2 rounded w-full text-black"
           >
             <option value="">Sélectionner une classe</option>
@@ -116,8 +126,8 @@ const Timetable = () => {
               <option value="">Aucune classe disponible</option>
             ) : (
               classes.map((classe) => (
-                <option key={classe._id} value={classe._id}>
-                  {classe.nom}  {/* Displaying class name here */}
+                <option key={classe._id} value={classe.name}>
+                  {classe.name}
                 </option>
               ))
             )}
