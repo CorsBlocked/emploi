@@ -7,6 +7,9 @@ const etudiantController = require('../Controller/etudiantController');
 // Create a new Etudiant
 router.post('/create', etudiantController.createEtudiant);
 
+router.post('/login', etudiantController.loginEtudiant);
+
+
 // Get all Etudiants
 router.get('/', etudiantController.getAllEtudiants);
 

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoginN from "../assets/Login.png"; // Ensure the image path is correct
-import axios from "axios"; // Import axios for API requests
 
-const Login = () => {
+const LoginAdmin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -11,6 +10,7 @@ const Login = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
+  
   const navigate = useNavigate(); // Use the navigate hook for redirection
 
   const handleChange = (e) => {
@@ -24,21 +24,21 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post("http://localhost:5500/etudiants/login", {
-        email: formData.email,
-        mdp: formData.password,
-      });
+    const { email, password } = formData;
 
-      if (response.status === 200) {
-        setErrorMessage(""); // Clear error message on successful submit
-        console.log("Login successful:", response.data);
+    try {
+      // Check if the email and password match the predefined credentials
+      if (email === "admin@admin.com" && password === "admin") {
+        setErrorMessage("");  // Clear error message on successful submit
+        console.log("User logged in successfully:", formData);
         
-        // Redirect to HomeEtudiant page
-        navigate("/HomeEtudiant");
+        // Redirect to the HomeEtudiant page
+        navigate("/admin");
+      } else {
+        setErrorMessage("Invalid email or password."); // Error message for wrong credentials
       }
     } catch (error) {
-      setErrorMessage("Invalid email or password");
+      setErrorMessage("Login failed, please try again.");
     }
   };
 
@@ -46,8 +46,8 @@ const Login = () => {
     <div className="flex flex-col lg:flex-row h-screen">
       {/* Left side - Login Form */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white p-8">
-        <h2 className="text-3xl font-bold mb-4">Login</h2>
-        <p className="text-gray-600 mb-6">Hello student, enter in here!</p>
+        <h2 className="text-3xl font-bold mb-4">Login Admin</h2>
+        <p className="text-gray-600 mb-6">Hello Admin, enter in here!</p>
 
         {/* Error message display */}
         {errorMessage && (
@@ -123,4 +123,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginAdmin;
