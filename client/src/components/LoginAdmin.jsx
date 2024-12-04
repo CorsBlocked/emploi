@@ -11,7 +11,7 @@ const LoginAdmin = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   
-  const navigate = useNavigate(); // Use the navigate hook for redirection
+  const navigate = useNavigate(); // navgate hook 
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,7 +32,7 @@ const LoginAdmin = () => {
         setErrorMessage("");  // Clear error message on successful submit
         console.log("User logged in successfully:", formData);
         
-        // Redirect to the HomeEtudiant page
+        // home page etudiant 
         navigate("/admin");
       } else {
         setErrorMessage("Invalid email or password."); // Error message for wrong credentials
