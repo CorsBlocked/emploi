@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { jsPDF } from "jspdf";
 import Sidebar from './Sidebar';
 
 const HomeEtudiant = () => {
@@ -50,6 +51,97 @@ const HomeEtudiant = () => {
       throw error;
     }
   };
+
+  const downloadPDF = () => {
+    if (!userDetails || !timetable) return;
+  
+    const doc = new jsPDF();
+  
+    // Define margins and dimensions
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const startX = 10;
+    const endX = pageWidth - 10;
+    let startY = 20;
+  
+    // Title Section
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text(`Timetable`, pageWidth / 2, startY, { align: "center" });
+  
+    startY += 10;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.text(`Student: ${userDetails.nom}`, startX, startY);
+    doc.text(`Class: ${userDetails.classe.nom}`, endX, startY, { align: "right" });
+  
+    startY += 10;
+    doc.setDrawColor(200);
+    doc.line(startX, startY, endX, startY); // Divider line
+    startY += 10;
+  
+    // Table Headers
+    const columnWidth = (pageWidth - 20) / (timetable.days.length + 1); // Equal width for columns
+    doc.setFont("helvetica", "bold");
+    doc.setFillColor(230, 230, 250); // Light purple for headers
+    doc.rect(startX, startY, pageWidth - 20, 10, "F"); // Header background
+  
+    doc.text("Time", startX + columnWidth / 2, startY + 7, { align: "center" }); // Time column
+    timetable.days.forEach((day, index) => {
+      doc.text(
+        day,
+        startX + columnWidth * (index + 1) + columnWidth / 2,
+        startY + 7,
+        { align: "center" }
+      );
+    });
+  
+    startY += 12;
+  
+    // Table Content
+    doc.setFont("helvetica", "normal");
+    timetable.times.forEach((time, rowIndex) => {
+      // Row background (alternating color)
+      if (rowIndex % 2 === 0) {
+        doc.setFillColor(240, 248, 255); // Light blue
+        doc.rect(startX, startY, pageWidth - 20, 10, "F");
+      }
+  
+      // Time column
+      doc.text(time, startX + columnWidth / 2, startY + 7, { align: "center" });
+  
+      // Subjects for each time slot
+      timetable.subjects.forEach((subjects, colIndex) => {
+        const subject = subjects[rowIndex] || "No class";
+        doc.text(
+          subject,
+          startX + columnWidth * (colIndex + 1) + columnWidth / 2,
+          startY + 7,
+          { align: "center" }
+        );
+      });
+  
+      startY += 12;
+    });
+  
+    // Footer
+    if (startY > doc.internal.pageSize.getHeight() - 20) {
+      doc.addPage(); // Add a new page if content overflows
+      startY = 20;
+    }
+  
+    startY += 10;
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text(
+      `Generated on: ${new Date().toLocaleString()}`,
+      startX,
+      doc.internal.pageSize.getHeight() - 10
+    );
+  
+    // Save PDF
+    doc.save(`${userDetails.nom}_Timetable.pdf`);
+  };
+  
 
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
@@ -102,6 +194,14 @@ const HomeEtudiant = () => {
           ))}
         </div>
       </div>
+
+      {/* Download PDF Button */}
+      <button
+        onClick={downloadPDF}
+        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition duration-200"
+      >
+        Download PDF
+      </button>
     </div>
   );
 };

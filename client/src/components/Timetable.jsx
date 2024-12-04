@@ -4,7 +4,7 @@ import "jspdf-autotable";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 
-const subjects = ["Math", "Science", "Physics", "laformatik", "ja8rafya","madania","islamia","teri5","sport", ];
+const subjects = ["Math", "Science", "Physics", "laformatik", "ja8rafya", "madania", "islamia", "teri5", "sport"];
 
 const Timetable = () => {
   const [timetable, setTimetable] = useState(
@@ -100,9 +100,6 @@ const Timetable = () => {
     });
 
     doc.save("emploi_du_temps.pdf");
-
-    // Save timetable to database as well
-    saveTimetableToDatabase();
   };
 
   return (
@@ -170,12 +167,20 @@ const Timetable = () => {
           </tbody>
         </table>
 
-        <button
-          onClick={downloadPDF}
-          className="bg-blue-600 text-white mt-6 px-6 py-2 rounded shadow hover:bg-blue-700 transition duration-200"
-        >
-          Enregistrer et Télécharger en PDF
-        </button>
+        <div className="flex mt-6 gap-4">
+          <button
+            onClick={saveTimetableToDatabase}
+            className="bg-pink-600 text-white px-6 py-2 rounded shadow hover:bg-pink-700 transition duration-200"
+          >
+            Enregistrer
+          </button>
+          <button
+            onClick={downloadPDF}
+            className="bg-gray-600 text-white px-6 py-2 rounded shadow hover:bg-gray-700 transition duration-200"
+          >
+            Télécharger en PDF
+          </button>
+        </div>
       </div>
     </div>
   );
