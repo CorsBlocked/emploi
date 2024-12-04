@@ -4,7 +4,9 @@ import "jspdf-autotable";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 
-const subjects = ["Math", "Science", "Physics", "laformatik", "ja8rafya", "madania", "islamia", "teri5", "sport"];
+const subjects = ["Algo at Programmation", "Architecture des Ordinateurs", "Mathématiques App", "Systéme Logiques", "Introduction a la G.P", "Dev Web et Multimédia", "English for computing ", "P.O.O", "Modélisation UML"
+ , "B.D.D", "Communication en entreprise", "Droit et PI", "Réseaux", "Electronique", "Développement Mobile"
+];
 
 const Timetable = () => {
   const [timetable, setTimetable] = useState(
