@@ -20,16 +20,16 @@ const AdminDashboard = () => {
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-4 bg-white shadow rounded-lg">
-              <h2 className="text-gray-800 text-xl font-bold">Total Users</h2>
-              <p className="text-gray-600 mt-2">150 Active Users</p>
+              <h2 className="text-gray-800 text-xl font-bold">Total Classes</h2>
+              <p className="text-gray-600 mt-2">50 Classes</p>
             </div>
             <div className="p-4 bg-white shadow rounded-lg">
               <h2 className="text-gray-800 text-xl font-bold">Classes Scheduled</h2>
               <p className="text-gray-600 mt-2">320 This Month</p>
             </div>
             <div className="p-4 bg-white shadow rounded-lg">
-              <h2 className="text-gray-800 text-xl font-bold">Pending Requests</h2>
-              <p className="text-gray-600 mt-2">12 New Requests</p>
+              <h2 className="text-gray-800 text-xl font-bold">Total Students</h2>
+              <p className="text-gray-600 mt-2">200 Student</p>
             </div>
           </div>
 

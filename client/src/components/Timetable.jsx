@@ -4,9 +4,10 @@ import "jspdf-autotable";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 
-const subjects = ["Algo at Programmation", "Architecture des Ordinateurs", "Mathématiques App", "Systéme Logiques", "Introduction a la G.P", "Dev Web et Multimédia", "English for computing ", "P.O.O", "Modélisation UML"
- , "B.D.D", "Communication en entreprise", "Droit et PI", "Réseaux", "Electronique", "Développement Mobile"
+const subjects = ["Algo_Programmation", "Architecture_Ordinateurs", "Mathématiques App", "Systéme Logiques", "Introduction a la G.P", "Dev_Multimédia", "English ", "P.O.O", "UML"
+ , "B.D.D", "Communication ", "Droit et PI", "Réseaux", "Electronique", "dev Mobile"
 ];
+
 
 const Timetable = () => {
   const [timetable, setTimetable] = useState(
@@ -14,7 +15,6 @@ const Timetable = () => {
   );
   const [selectedClass, setSelectedClass] = useState("");
   const [classes, setClasses] = useState([]);
-
   const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
   const times = ["8:30-10:00", "10:15-11:45", "12:00-13:30", "13:45-15:15", "15:30-17:00"];
 
