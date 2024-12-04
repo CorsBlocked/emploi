@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import LoginN from "../assets/Login.png"; // Ensure the image path is correct
 
 const LoginAdmin = () => {
@@ -76,22 +76,7 @@ const LoginAdmin = () => {
           required
         />
 
-        {/* Remember me and Forgot password */}
-        <div className="w-full lg:w-3/4 flex items-center justify-between mb-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              name="rememberMe"
-              checked={formData.rememberMe}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            Remember me
-          </label>
-          <a href="#" className="text-blue-500 hover:underline">
-            Forgot password?
-          </a>
-        </div>
+        
 
         {/* Submit Button */}
         <button
@@ -102,13 +87,7 @@ const LoginAdmin = () => {
           Login
         </button>
 
-        {/* Register Link */}
-        <p className="text-gray-600">
-          Not registered yet?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Create a new account
-          </Link>
-        </p>
+       
       </div>
 
       {/* Right side - Image */}
