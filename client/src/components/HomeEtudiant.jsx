@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { jsPDF } from "jspdf";
-import Sidebar from './Sidebar';
 
 const HomeEtudiant = () => {
   const location = useLocation();
