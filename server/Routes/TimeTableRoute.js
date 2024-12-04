@@ -6,23 +6,16 @@ const router = express.Router();
 // Route pour ajouter un emploi du temps
 router.post('/add', saveTimetable);
 
-
 router.get('/get', getAllTimetables);
-
 
 // Route pour récupérer un emploi du temps
 router.get('/get/:className', getTimetableByClass);
 
-//update
+//update route
 router.put('/update/:className', updateTimetable);
 
-
-//delete
+//delete route
 router.delete('/delete/:className', deleteTimetable);
-
-
-
-
 
 
 // Gestion des erreurs non capturées
